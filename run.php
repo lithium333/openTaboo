@@ -15,7 +15,40 @@ switch($jdat["state"]) {
 		echo "<div class='loaderbar'></div>\n";
 		break;
 	case 2:
+		function prtcarta() {
+			$jcartaraw = file_get_contents("carta.json");
+			$jcartadat = json_decode($jcartaraw,true);
+			echo "<div style='border:3px solid;width:180px;margin:0 auto;margin-top:32px;border-radius:12px;'>\n";
+			echo "<h2 style='text-align:center;color:darkblue;' >".$jcartadat["parola"]."</h2>\n";
+			foreach($jcartadat["vietato"] as $parolabandita)
+				echo "<p style='text-align:center;color:darkorange;' >".$parolabandita."</p>\n";
+			echo "</div>\n";
+			
+		}
+		$playerid=$_GET['id']-1;
+		$teamid=$playerid%2; // 0 red ; 1 blu
+		$turnoteam=$jdat['turno']%2;
+		echo "<h2>".$jdat["players"][$_GET['id']-1];
+		if($teamid) {
+			echo " 🔵</h2>\n";
+		} else {
+			echo " 🔴</h2>\n";
+		}
 		//gestione turno
+		if($playerid==$jdat['turno']) {
+			echo "<h2>TURNO TUO!</h2>\n";
+			prtcarta();
+			//gestione carta e timer
+		} else {
+			if($teamid==$turnoteam) {
+				echo "<h2>Turno del tuo team, INDOVINA ❓</h2>\n";
+				// gestione indovina
+			} else {
+				echo "<h2>Turno del team avversario, CONTROLLA 👀</h2>\n";
+				echo "<div class='loaderbar'></div>\n";
+				prtcarta();
+			}
+		}
 	default:
 		//unmanaged
 }

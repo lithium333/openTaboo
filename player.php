@@ -37,7 +37,7 @@ switch($jdat["state"]) {
 				echo "<h3>SLOT ".($i+1)." 🔵";
 			else
 				echo "<h3>SLOT ".($i+1)." 🔴";
-			echo " <a href='run.php?id=".$i."'>".htmlentities($jdat["players"][$i])."</a></h3>";
+			echo " <a href='run.php?id=".($i+1)."'>".htmlentities($jdat["players"][$i])."</a></h3>";
 		}
 	default:
 		//unmanaged

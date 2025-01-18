@@ -11,8 +11,8 @@ if($g_rounds<1)
 	die("<h1>Deve esserci almeno un turno!</h1>");
 if($g_skips<0)
 	die("<h1>Specificare un valore positivo o nullo per i passo!</h1>");
-if($g_nplayers<2)
-	die("<h1>Almeno 2 giocatori è un must!</h1>");
+if($g_nplayers<4)
+	die("<h1>Almeno 4 giocatori è un must!</h1>");
 
 // edit json
 $jraw = file_get_contents("game.json");
