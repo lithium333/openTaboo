@@ -42,7 +42,6 @@ switch($jdat["state"]) {
 		} else {
 			if($teamid==$turnoteam) {
 				echo "<h2>Turno del tuo team, INDOVINA ❓</h2>\n";
-				// gestione indovina
 			} else {
 				echo "<h2>Turno del team avversario, CONTROLLA 👀</h2>\n";
 				echo "<div class='loaderbar'></div>\n";
