@@ -10,6 +10,8 @@ switch($jdat["state"]) {
 		header("Location: player.php");
 		break;
 	case 1:
+		if(($jdat["players"][$_GET['id']-1])==null)
+			header("Location: player.php");
 		echo "<h2>Player: ".$jdat["players"][$_GET['id']-1]."</h2>\n";
 		echo "<h2>Aspetta che il caposala dia il via...</h2>\n";
 		echo "<div class='loaderbar'></div>\n";
@@ -30,10 +32,11 @@ switch($jdat["state"]) {
 		$turnoteam=$jdat['turno']%2;
 		echo "<h2>".$jdat["players"][$_GET['id']-1];
 		if($teamid) {
-			echo " 🔵</h2>\n";
+			echo " 🔵 ";
 		} else {
-			echo " 🔴</h2>\n";
+			echo " 🔴 ";
 		}
+		echo "[".$_GET['id']."]</h2>\n";
 		//gestione turno
 		if($playerid==$jdat['turno']) {
 			echo "<h2>TURNO TUO!</h2>\n";
@@ -67,7 +70,7 @@ function myFunction() {
    };
    xmlHttp.send();
 }
-setInterval(myFunction, 1000);
+setInterval(myFunction, 250);
 </script>
 <style>
 .loaderbar {

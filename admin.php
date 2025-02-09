@@ -49,11 +49,12 @@ switch($jdat["state"]) {
 				echo "<h3>🔵 ";
 			else
 				echo "<h3>🔴 ";
-			echo htmlentities($jdat["players"][$i])."</h3>\n";
+			echo htmlentities($jdat["players"][$i])." [".($i+1)."]</h3>\n";
 		}
 		echo "<h2>PUNTEGGI</h3>";
 		echo "<h3>🔴 <a style='text-decoration:none' href='setpt.php?decred'>-</a> ".$jdat["ptA"]."pt <a style='text-decoration:none' href='setpt.php?incred'>+</a></h3>";
 		echo "<h3>🔵 <a style='text-decoration:none' href='setpt.php?decblue'>-</a> ".$jdat["ptB"]."pt <a style='text-decoration:none' href='setpt.php?incblue'>+</a></h3>";
+		echo "<h3>Turno: ".($jdat["turno"]+1)." <a style='text-decoration:none' href='turnosucc.php'>AVANTI</a></h3>";
 		echo "<h3><a href='reset.php'>REIMPOSTA</a></h3>";
 		break;
 	default:
