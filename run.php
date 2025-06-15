@@ -5,6 +5,7 @@
 <?php
 $jraw = file_get_contents("game.json");
 $jdat = json_decode($jraw,true);
+$showingcnt=false;
 switch($jdat["state"]) {
 	case 0:
 		header("Location: player.php");
@@ -33,15 +34,19 @@ switch($jdat["state"]) {
 		echo "<h2>".$jdat["players"][$_GET['id']-1];
 		if($teamid) {
 			echo " 🔵 ";
+			$ptteam=$jdat['ptB'];
 		} else {
 			echo " 🔴 ";
+			$ptteam=$jdat['ptA'];
 		}
 		echo "[".$_GET['id']."]</h2>\n";
+		echo "<h2>PUNTI TEAM: ".$ptteam."</h2>\n";
 		//gestione turno
 		if($playerid==$jdat['turno']) {
 			echo "<h2>TURNO TUO!</h2>\n";
 			prtcarta();
-			//gestione carta e timer
+			$showingcnt=true;
+			echo "<h2 style='text-align:center;'><span id='tempo'></span></h2>\n";
 		} else {
 			if($teamid==$turnoteam) {
 				echo "<h2>Turno del tuo team, INDOVINA ❓</h2>\n";
@@ -71,6 +76,26 @@ function myFunction() {
    xmlHttp.send();
 }
 setInterval(myFunction, 250);
+<?php
+if($showingcnt) {
+	echo "function myFunction2() {\n";
+	echo "	var xmlHttp = new XMLHttpRequest();\n";
+	echo "	xmlHttp.open(\"GET\", \"./gettime.php\", true);\n";
+	echo "	xmlHttp.onload = function () {\n";
+	echo "		var tsnew = xmlHttp.responseText;\n";
+	echo "		var tsmax = ".$jdat["time"].";";
+	echo "		var tsrnd = (tsnew/1000).toFixed(1);\n";
+	echo "		if (tsrnd>tsmax) {\n";
+	echo "			document.getElementById(\"tempo\").innerHTML = \"<span style='color:#7F0000;'>TIME END: \"+tsmax+\" s</span>\";\n";
+	echo "		} else {\n";
+	echo "			document.getElementById(\"tempo\").innerHTML = tsrnd+\" s\";\n";
+	echo "		};\n";
+	echo "	};\n";
+	echo "	xmlHttp.send();\n";
+	echo "}\n";
+	echo "setInterval(myFunction2, 100);\n";
+}
+?>
 </script>
 <style>
 .loaderbar {
