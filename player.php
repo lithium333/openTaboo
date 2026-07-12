@@ -4,10 +4,11 @@
 <h1 style='text-align:center;'>openTaboo</h1>
 <?php
 
-$jraw = file_get_contents("game.json");
-$jdat = json_decode($jraw,true);
+include "core.php";
 
-// 0: sby, 1: players adding, 2:running
+gamedataRead(); // VARIABLE : $jdat
+
+// Game State -> 0: INIT, 1: PLAYER ENTERING, 2: RUNNING
 switch($jdat["state"]) {
 	case 0:
 		echo "<h2>Attendere che il caposala imposti i parametri...</h2>";
@@ -62,7 +63,7 @@ function myFunction() {
    xmlHttp.send();
 }
 
-setInterval(myFunction, 1000);
+setInterval(myFunction, 100);
     
 </script>
 <style>

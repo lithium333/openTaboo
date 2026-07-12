@@ -1,7 +1,10 @@
 <?php
-$jraw = file_get_contents("game.json");
-$jdat = json_decode($jraw,true);
 
+include "core.php";
+
+gamedataRead(); // VARIABLE : $jdat
+
+// Set points logic
 if(isset($_GET['decred'])) {
 	if($jdat["ptA"]>0) $jdat["ptA"]=$jdat["ptA"]-1;
 } else if(isset($_GET['incred'])) {
@@ -13,8 +16,9 @@ if(isset($_GET['decred'])) {
 } else {
 	die("<h1>Query non valida!</h1>");
 }
+
 $jdat['lastwrite']=time();
-$jraw = json_encode($jdat);
-file_put_contents("game.json",$jraw);
+gamedataWrite(); // VARIABLE : $jdat
+
 header("Location: admin.php");
 ?>

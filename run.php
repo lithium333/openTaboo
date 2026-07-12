@@ -4,8 +4,10 @@
 <h1 style='text-align:center;'>openTaboo</h1>
 <?php
 
-$jraw = file_get_contents("game.json");
-$jdat = json_decode($jraw,true);
+include "core.php";
+
+gamedataRead(); // VARIABLE : $jdat
+
 $showingcnt=false;
 switch($jdat["state"]) {
 	case 0:
@@ -20,8 +22,8 @@ switch($jdat["state"]) {
 		break;
 	case 2:
 		function prtcarta() {
-            $path_userC = "./cards/carta.json";
-			$jcartaraw = file_get_contents($path_userC);
+            global $path_card_current;
+            $jcartaraw = file_get_contents($path_card_current);
 			$jcartadat = json_decode($jcartaraw,true);
 			echo "<div style='border:3px solid;width:250px;margin:0 auto;margin-top:32px;border-radius:12px;'>\n";
 			echo "<h2 style='text-align:center;color:darkblue;' >".$jcartadat["soluz"]."</h2>\n";

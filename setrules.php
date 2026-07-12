@@ -1,10 +1,13 @@
 <?php
 
+include "core.php";
+
 $g_time = $_GET['time'];
 $g_rounds = $_GET['rounds'];
 $g_skips = $_GET['skips'];
 $g_nplayers = $_GET['nplayers'];
 
+// Game Rules
 if($g_time<=0)
 	die("<h1>Il turno deve durare un numero positivo e diverso da 0 di secondi!</h1>");
 if($g_rounds<1)
@@ -14,9 +17,8 @@ if($g_skips<0)
 if($g_nplayers<4)
 	die("<h1>Almeno 4 giocatori è un must!</h1>");
 
-// edit json
-$jraw = file_get_contents("game.json");
-$jdat = json_decode($jraw,true);
+// GameData Change
+gamedataRead(); // VARIABLE : $jdat
 $jdat["time"] = (int)$g_time;
 $jdat["rounds"] = (int)$g_rounds;
 $jdat["skips"] = (int)$g_skips;
@@ -27,8 +29,9 @@ for($i=0;$i<$jdat["nplayers"];$i++) {
 }
 $jdat["state"]=1;
 $jdat['lastwrite']=time();
-$jraw = json_encode($jdat);
-file_put_contents("game.json",$jraw);
+gamedataWrite(); // VARIABLE : $jdat
+
+
 header("Location: admin.php");
 
 ?>
