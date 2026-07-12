@@ -3,6 +3,7 @@
 <body>
 <h1 style='text-align:center;'>openTaboo</h1>
 <?php
+
 $jraw = file_get_contents("game.json");
 $jdat = json_decode($jraw,true);
 $showingcnt=false;
@@ -19,12 +20,13 @@ switch($jdat["state"]) {
 		break;
 	case 2:
 		function prtcarta() {
-			$jcartaraw = file_get_contents("carta.json");
+            $path_userC = "./cards/carta.json";
+			$jcartaraw = file_get_contents($path_userC);
 			$jcartadat = json_decode($jcartaraw,true);
-			echo "<div style='border:3px solid;width:180px;margin:0 auto;margin-top:32px;border-radius:12px;'>\n";
-			echo "<h2 style='text-align:center;color:darkblue;' >".$jcartadat["parola"]."</h2>\n";
+			echo "<div style='border:3px solid;width:250px;margin:0 auto;margin-top:32px;border-radius:12px;'>\n";
+			echo "<h2 style='text-align:center;color:darkblue;' >".$jcartadat["soluz"]."</h2>\n";
 			foreach($jcartadat["vietato"] as $parolabandita)
-				echo "<p style='text-align:center;color:darkorange;' >".$parolabandita."</p>\n";
+				echo "<h3 style='text-align:center;color:darkorange;' >".$parolabandita."</h3>\n";
 			echo "</div>\n";
 			
 		}
