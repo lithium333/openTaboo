@@ -21,4 +21,5 @@ $jdat['lastwrite']=time();
 gamedataWrite(); // VARIABLE : $jdat
 
 header("Location: admin.php");
+
 ?>

@@ -12,7 +12,16 @@ cardsPut();
 
 // Shift Next
 gamedataRead(); // VARIABLE : $jdat
-$jdat["turno"] = ($jdat["turno"]+1)%($jdat["nplayers"]);
+$jdat["turno"]++;
+if($jdat["turno"]>=$jdat["nplayers"]) {
+    $jdat["curround"]++;
+    if($jdat["curround"]>=$jdat["rounds"]) {
+        $jdat["state"]=3; // rounds end
+        $jdat["curround"]=$jdat["rounds"]-1;
+    } else {
+        $jdat["turno"]=0;
+    }
+}
 $jdat["curskip"]=$jdat["skips"];
 $jdat['lastwrite']=time();
 gamedataWrite(); // VARIABLE : $jdat

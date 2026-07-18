@@ -1,4 +1,9 @@
+<!DOCTYPE html>
 <html>
+<head>
+  <title>openTaboo Player</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <body>
 <h1 style='text-align:center;'>openTaboo</h1>
@@ -21,7 +26,8 @@ switch($jdat["state"]) {
 		echo "<div class='loaderbar'></div>\n";
 		break;
 	case 2:
-		function prtcarta() {
+		// FUNC PRINT CARD
+        function prtcarta() {
             global $path_card_current;
             $jcartaraw = file_get_contents($path_card_current);
 			$jcartadat = json_decode($jcartaraw,true);
@@ -32,6 +38,8 @@ switch($jdat["state"]) {
 			echo "</div>\n";
 			
 		}
+	case 3:
+		// HEAD PLAYER PAGE
 		$playerid=$_GET['id']-1;
 		$teamid=$playerid%2; // 0 red ; 1 blu
 		$turnoteam=$jdat['turno']%2;
@@ -43,29 +51,33 @@ switch($jdat["state"]) {
 			echo " 🔴 ";
 			$ptteam=$jdat['ptA'];
 		}
-		echo "[".$_GET['id']."]</h2>\n";
-		echo "<h2>PUNTI TEAM: ".$ptteam."</h2>\n";
-		//gestione turno
-		if($playerid==$jdat['turno']) {
-			echo "<h2>TURNO TUO!</h2>\n";
-            //echo "<form name=\"nextcard\" action=\"\" >\n";
-            echo "<button id='buttOK' onclick=\"submitSuccess()\" name=\"success\">PRESA!</button>\n";
-            if($jdat['curskip']>0)
-                echo "<button id='buttSK' onclick=\"submitSkip()\" name=\"skipped\">PASSO: ".$jdat['curskip']."</button>\n";
-            //echo "</form>\n";
-			prtcarta();
-			$showingcnt=true;
-			echo "<h2 style='text-align:center;'><span id='tempo'></span></h2>\n";
-		} else {
-			if($teamid==$turnoteam) {
-				echo "<h2>Turno del tuo team, INDOVINA ❓</h2>\n";
-			} else {
-				echo "<h2>Turno del team avversario, CONTROLLA 👀</h2>\n";
-				echo "<div class='loaderbar'></div>\n";
+		echo "[".$_GET['id']."]<br>\n";
+        // PRINT ROUND AND POINTS
+        echo "Round: ".($jdat['curround']+1)."/".$jdat['rounds']."<br>\n";
+		echo "PUNTI TEAM: ".$ptteam."<br>\n";
+		if($jdat['state']==2) {
+			//gestione turno
+			if($playerid==$jdat['turno']) {
+				echo "<h2>TURNO TUO!</h2>\n";
+            	echo "<button id='buttOK' onclick=\"submitSuccess()\" name=\"success\">PRESA!</button>\n";
+            	if($jdat['curskip']>0)
+                	echo "<button id='buttSK' onclick=\"submitSkip()\" name=\"skipped\">PASSO: ".$jdat['curskip']."</button>\n";
 				prtcarta();
+				$showingcnt=true;
+				echo "<h2 style='text-align:center;'><span id='tempo'></span></h2>\n";
+			} else {
+				if($teamid==$turnoteam) {
+					echo "<h2>Turno del tuo team, INDOVINA ❓</h2>\n";
+				} else {
+					echo "<h2>Turno del team avversario, CONTROLLA 👀</h2>\n";
+					echo "<div class='loaderbar'></div>\n";
+					prtcarta();
+				}
 			}
-		}
-	default:
+		} else {
+			echo "<h2>GAME END!</h2>\n";
+        }
+    default:
 		//unmanaged
 }
 ?>
@@ -86,20 +98,12 @@ function submitSkip() {
     xmlHttp.send();
 }
 
-function checkUpdates() {
-   var xmlHttp = new XMLHttpRequest();
-   xmlHttp.open("GET", "./getupdate.php", true);
-   xmlHttp.onload = function () {
-       var tsnew = xmlHttp.responseText;
-       if(tsnew!=ts) {
-           console.log(tsnew);
-           window.location.reload();
-       }
-   };
-   xmlHttp.send();
-}
+var eventUpdate = new EventSource("getupdate.php");
 
-setInterval(checkUpdates, 100);
+eventUpdate.onmessage = function(event) {   
+    if(ts!=event.data)
+        window.location.reload();
+};
 
 <?php
 if($showingcnt) {
@@ -114,7 +118,6 @@ if($showingcnt) {
 	echo "		if (tsrnd>tsmax) {\n";
 	echo "			document.getElementById(\"tempo\").innerHTML = \"<span style='color:#7F0000;'>TIME END: \"+tsmax+\" s</span>\";\n";
     echo "			if(timeEnd != true) {\n";
-    echo "				console.log(tsrnd);\n";
     echo "				timeEnd = true;\n";
     echo "				document.getElementById(\"buttOK\").remove();\n";
     echo "				document.getElementById(\"buttSK\").remove();\n";
@@ -125,10 +128,11 @@ if($showingcnt) {
 	echo "	};\n";
 	echo "	xmlHttp.send();\n";
 	echo "}\n";
-	echo "setInterval(timeCounter, 100);\n";
+	echo "setInterval(timeCounter, 50);\n";
 }
 
 ?>
+
 </script>
 <style>
 .loaderbar {

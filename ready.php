@@ -13,6 +13,7 @@ $jdat["ptB"]=0;
 $jdat["turno"]=0;
 $jdat["state"]=2;
 $jdat["curskip"]=$jdat["skips"];
+$jdat["curround"]=0;
 $jdat['lastwrite']=time();
 
 gamedataWrite(); // VARIABLE : $jdat
@@ -21,4 +22,5 @@ file_put_contents($path_card_current,$jcard_extracted_F); // INSERT EXTRACTED CA
 file_put_contents("timecnt.txt",(new DateTime())->format('Uv')); // RESET TIMER
 
 header("Location: admin.php");
+
 ?>

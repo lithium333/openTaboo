@@ -1,13 +1,18 @@
+<!DOCTYPE html>
 <html>
+<head>
+  <title>openTaboo Admin</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
 <body>
-<h1>Taboo Control Center</h1>
+<h1>openTaboo Control Center</h1>
 <?php
 
 include "core.php";
 
 gamedataRead(); // VARIABLE : $jdat
 
-// Game State -> 0: INIT, 1: PLAYER ENTERING, 2: RUNNING
+// Game State -> 0: INIT, 1: PLAYER ENTERING, 2: RUNNING, 3: END
 switch($jdat["state"]) {
 	case 0:
 		echo "<form action='setrules.php' method='get'>\n";
@@ -42,7 +47,8 @@ switch($jdat["state"]) {
 		}
 		echo "<h3><a href='reset.php'>REIMPOSTA</a></h3>";
 		break;
-	case 2:
+	case 2: // GAME RUNNING
+    case 3: // GAME END
 		echo "<h2>Giocatori:</h2>\n";
 		for($i=0;$i<$jdat["nplayers"];$i++) {
 			if($i%2)
@@ -54,7 +60,9 @@ switch($jdat["state"]) {
 		echo "<h2>PUNTEGGI</h3>";
 		echo "<h3>🔴 <a style='text-decoration:none' href='setpt.php?decred'>-</a> ".$jdat["ptA"]."pt <a style='text-decoration:none' href='setpt.php?incred'>+</a></h3>";
 		echo "<h3>🔵 <a style='text-decoration:none' href='setpt.php?decblue'>-</a> ".$jdat["ptB"]."pt <a style='text-decoration:none' href='setpt.php?incblue'>+</a></h3>";
-		echo "<h3>Turno: ".($jdat["turno"]+1)." <a style='text-decoration:none' href='turnosucc.php'>AVANTI</a></h3>";
+		echo "<h3>Round: ".($jdat["curround"]+1)."/".$jdat["rounds"]."</h3>";
+		if($jdat["state"]==2)
+			echo "<h3>Turno: ".($jdat["turno"]+1)." <a style='text-decoration:none' href='turnosucc.php'>AVANTI</a></h3>";
 		echo "<h3><a href='reset.php'>REIMPOSTA</a></h3>";
 		break;
 	default:
@@ -65,22 +73,15 @@ switch($jdat["state"]) {
 </body>
 
 <script>
+
 var ts = <?php echo $jdat['lastwrite'];?>;
 
-function myFunction() {
-   var xmlHttp = new XMLHttpRequest();
-   xmlHttp.open("GET", "./getupdate.php", true);
-   xmlHttp.onload = function () {
-       var tsnew = xmlHttp.responseText;
-       if(tsnew!=ts) {
-           console.log(tsnew);
-           window.location.reload();
-       }
-   };
-   xmlHttp.send();
-}
+var eventUpdate = new EventSource("getupdate.php");
 
-setInterval(myFunction, 100);
+eventUpdate.onmessage = function(event) {   
+    if(ts!=event.data)
+        window.location.reload();
+};
     
 </script>
 

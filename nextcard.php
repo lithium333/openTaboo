@@ -32,4 +32,5 @@ file_put_contents($path_card_current,$jcard_extracted_F); // INSERT EXTRACTED CA
 
 $jdat['lastwrite']=time();
 gamedataWrite(); // VARIABLE : $jdat
+
 ?>

@@ -1,4 +1,9 @@
+<!DOCTYPE html>
 <html>
+<head>
+  <title>openTaboo Start</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <body>
 <h1 style='text-align:center;'>openTaboo</h1>
@@ -56,21 +61,12 @@ function stopRefresh() {
     refreshInhibit = true;
 }
 
-function checkUpdates() {
-    if(refreshInhibit != true) {
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", "./getupdate.php", true);
-        xmlHttp.onload = function () {
-            var tsnew = xmlHttp.responseText;
-                if(tsnew!=ts) {
-                    window.location.reload();
-                }
-        };
-        xmlHttp.send();
-    }
-}
+var eventUpdate = new EventSource("getupdate.php");
 
-setInterval(checkUpdates, 100);
+eventUpdate.onmessage = function(event) {   
+    if(ts!=event.data)
+        window.location.reload();
+};
     
 </script>
 <style>
