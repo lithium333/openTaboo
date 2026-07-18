@@ -13,6 +13,7 @@ cardsPut();
 // Shift Next
 gamedataRead(); // VARIABLE : $jdat
 $jdat["turno"] = ($jdat["turno"]+1)%($jdat["nplayers"]);
+$jdat["curskip"]=$jdat["skips"];
 $jdat['lastwrite']=time();
 gamedataWrite(); // VARIABLE : $jdat
 file_put_contents($path_card_current,$jcard_extracted_F); // INSERT EXTRACTED CARD

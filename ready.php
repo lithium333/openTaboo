@@ -12,6 +12,7 @@ $jdat["ptA"]=0;
 $jdat["ptB"]=0;
 $jdat["turno"]=0;
 $jdat["state"]=2;
+$jdat["curskip"]=$jdat["skips"];
 $jdat['lastwrite']=time();
 
 gamedataWrite(); // VARIABLE : $jdat

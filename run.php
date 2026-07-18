@@ -48,6 +48,11 @@ switch($jdat["state"]) {
 		//gestione turno
 		if($playerid==$jdat['turno']) {
 			echo "<h2>TURNO TUO!</h2>\n";
+            //echo "<form name=\"nextcard\" action=\"\" >\n";
+            echo "<button id='buttOK' onclick=\"submitSuccess()\" name=\"success\">PRESA!</button>\n";
+            if($jdat['curskip']>0)
+                echo "<button id='buttSK' onclick=\"submitSkip()\" name=\"skipped\">PASSO: ".$jdat['curskip']."</button>\n";
+            //echo "</form>\n";
 			prtcarta();
 			$showingcnt=true;
 			echo "<h2 style='text-align:center;'><span id='tempo'></span></h2>\n";
@@ -66,8 +71,22 @@ switch($jdat["state"]) {
 ?>
 </body>
 <script>
+
 var ts = <?php echo $jdat['lastwrite'];?>;
-function myFunction() {
+
+function submitSuccess() {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", "./nextcard.php?success", false);
+    xmlHttp.send();
+}
+
+function submitSkip() {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", "./nextcard.php?skipped", false);
+    xmlHttp.send();
+}
+
+function checkUpdates() {
    var xmlHttp = new XMLHttpRequest();
    xmlHttp.open("GET", "./getupdate.php", true);
    xmlHttp.onload = function () {
@@ -79,10 +98,13 @@ function myFunction() {
    };
    xmlHttp.send();
 }
-setInterval(myFunction, 250);
+
+setInterval(checkUpdates, 100);
+
 <?php
 if($showingcnt) {
-	echo "function myFunction2() {\n";
+    echo "var timeEnd = false;\n";
+	echo "function timeCounter() {\n";
 	echo "	var xmlHttp = new XMLHttpRequest();\n";
 	echo "	xmlHttp.open(\"GET\", \"./gettime.php\", true);\n";
 	echo "	xmlHttp.onload = function () {\n";
@@ -91,14 +113,21 @@ if($showingcnt) {
 	echo "		var tsrnd = (tsnew/1000).toFixed(1);\n";
 	echo "		if (tsrnd>tsmax) {\n";
 	echo "			document.getElementById(\"tempo\").innerHTML = \"<span style='color:#7F0000;'>TIME END: \"+tsmax+\" s</span>\";\n";
+    echo "			if(timeEnd != true) {\n";
+    echo "				console.log(tsrnd);\n";
+    echo "				timeEnd = true;\n";
+    echo "				document.getElementById(\"buttOK\").remove();\n";
+    echo "				document.getElementById(\"buttSK\").remove();\n";
+    echo "			}\n";
 	echo "		} else {\n";
-	echo "			document.getElementById(\"tempo\").innerHTML = tsrnd+\" s\";\n";
+	echo "			document.getElementById(\"tempo\").innerHTML = tsrnd + \" s\";\n";
 	echo "		};\n";
 	echo "	};\n";
 	echo "	xmlHttp.send();\n";
 	echo "}\n";
-	echo "setInterval(myFunction2, 100);\n";
+	echo "setInterval(timeCounter, 100);\n";
 }
+
 ?>
 </script>
 <style>

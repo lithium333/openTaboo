@@ -28,7 +28,7 @@ switch($jdat["state"]) {
 					echo "SLOT ".($i+1)." 🔴</h3>";
 			}
 		}
-		echo "<br><input type='submit' value='PROCEDI'/>\n";
+		echo "<br><input type='submit' value='PROCEDI' onclick='stopRefresh()' />\n";
 		echo "</form>\n";
 		break;
 	case 2:
@@ -48,22 +48,29 @@ switch($jdat["state"]) {
 </body>
 
 <script>
-var ts = <?php echo $jdat['lastwrite'];?>;
 
-function myFunction() {
-   var xmlHttp = new XMLHttpRequest();
-   xmlHttp.open("GET", "./getupdate.php", true);
-   xmlHttp.onload = function () {
-       var tsnew = xmlHttp.responseText;
-       if(tsnew!=ts) {
-           console.log(tsnew);
-           window.location.reload();
-       }
-   };
-   xmlHttp.send();
+var ts = <?php echo $jdat['lastwrite'];?>;
+var refreshInhibit = false;
+
+function stopRefresh() {
+    refreshInhibit = true;
 }
 
-setInterval(myFunction, 100);
+function checkUpdates() {
+    if(refreshInhibit != true) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", "./getupdate.php", true);
+        xmlHttp.onload = function () {
+            var tsnew = xmlHttp.responseText;
+                if(tsnew!=ts) {
+                    window.location.reload();
+                }
+        };
+        xmlHttp.send();
+    }
+}
+
+setInterval(checkUpdates, 100);
     
 </script>
 <style>
