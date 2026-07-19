@@ -26,8 +26,7 @@ $jdat["curskip"]=$jdat["skips"];
 $jdat['lastwrite']=time();
 gamedataWrite(); // VARIABLE : $jdat
 file_put_contents($path_card_current,$jcard_extracted_F); // INSERT EXTRACTED CARD
-file_put_contents("timecnt.txt",(new DateTime())->format('Uv')); // RESET TIMER
-
+exec("./settime.bin");
 header("Location: admin.php");
 
 ?>

@@ -8,13 +8,15 @@ header('Connection: keep-alive');
 
 //set_time_limit(0);
 
-
-
 include "core.php";
+
+$lastts=-1;
 
 while(true) {
     gamedataRead(); // VARIABLE : $jdat
-    echo "data:".$jdat['lastwrite']."\n\n"; // SEND TIMESTAMP LAST CHANGE
+    if($lastts!=$jdat['lastwrite'])
+        echo "data:".$jdat['lastwrite']."\n\n"; // SEND TIMESTAMP LAST CHANGE
+    $lastts=$jdat['lastwrite'];
     flush();
     usleep(100000); // 100ms delay
     if(connection_aborted()) exit();

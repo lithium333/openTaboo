@@ -27,9 +27,9 @@ switch($jdat["state"]) {
 		break;
 	case 2:
 		// FUNC PRINT CARD
-        function prtcarta() {
-            global $path_card_current;
-            $jcartaraw = file_get_contents($path_card_current);
+		function prtcarta() {
+			global $path_card_current;
+			$jcartaraw = file_get_contents($path_card_current);
 			$jcartadat = json_decode($jcartaraw,true);
 			echo "<div style='border:3px solid;width:250px;margin:0 auto;margin-top:32px;border-radius:12px;'>\n";
 			echo "<h2 style='text-align:center;color:darkblue;' >".$jcartadat["soluz"]."</h2>\n";
@@ -52,16 +52,16 @@ switch($jdat["state"]) {
 			$ptteam=$jdat['ptA'];
 		}
 		echo "[".$_GET['id']."]<br>\n";
-        // PRINT ROUND AND POINTS
-        echo "Round: ".($jdat['curround']+1)."/".$jdat['rounds']."<br>\n";
+		// PRINT ROUND AND POINTS
+		echo "Round: ".($jdat['curround']+1)."/".$jdat['rounds']."<br>\n";
 		echo "PUNTI TEAM: ".$ptteam."<br>\n";
 		if($jdat['state']==2) {
 			//gestione turno
 			if($playerid==$jdat['turno']) {
 				echo "<h2>TURNO TUO!</h2>\n";
-            	echo "<button id='buttOK' onclick=\"submitSuccess()\" name=\"success\">PRESA!</button>\n";
-            	if($jdat['curskip']>0)
-                	echo "<button id='buttSK' onclick=\"submitSkip()\" name=\"skipped\">PASSO: ".$jdat['curskip']."</button>\n";
+				echo "<button id='buttOK' onclick=\"submitSuccess()\" name=\"success\">PRESA!</button>\n";
+				if($jdat['curskip']>0)
+					echo "<button id='buttSK' onclick=\"submitSkip()\" name=\"skipped\">PASSO: ".$jdat['curskip']."</button>\n";
 				prtcarta();
 				$showingcnt=true;
 				echo "<h2 style='text-align:center;'><span id='tempo'></span></h2>\n";
@@ -76,8 +76,8 @@ switch($jdat["state"]) {
 			}
 		} else {
 			echo "<h2>GAME END!</h2>\n";
-        }
-    default:
+		}
+	default:
 		//unmanaged
 }
 ?>
@@ -87,48 +87,42 @@ switch($jdat["state"]) {
 var ts = <?php echo $jdat['lastwrite'];?>;
 
 function submitSuccess() {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", "./nextcard.php?success", false);
-    xmlHttp.send();
+	var xmlHttp = new XMLHttpRequest();
+	xmlHttp.open("GET", "./nextcard.php?success", false);
+	xmlHttp.send();
 }
 
 function submitSkip() {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", "./nextcard.php?skipped", false);
-    xmlHttp.send();
+	var xmlHttp = new XMLHttpRequest();
+	xmlHttp.open("GET", "./nextcard.php?skipped", false);
+	xmlHttp.send();
 }
 
 var eventUpdate = new EventSource("getupdate.php");
 
 eventUpdate.onmessage = function(event) {   
-    if(ts!=event.data)
-        window.location.reload();
+	if(ts!=event.data)
+		window.location.reload();
 };
 
 <?php
 if($showingcnt) {
-    echo "var timeEnd = false;\n";
-	echo "function timeCounter() {\n";
-	echo "	var xmlHttp = new XMLHttpRequest();\n";
-	echo "	xmlHttp.open(\"GET\", \"./gettime.php\", true);\n";
-	echo "	xmlHttp.onload = function () {\n";
-	echo "		var tsnew = xmlHttp.responseText;\n";
-	echo "		var tsmax = ".$jdat["time"].";";
-	echo "		var tsrnd = (tsnew/1000).toFixed(1);\n";
-	echo "		if (tsrnd>tsmax) {\n";
-	echo "			document.getElementById(\"tempo\").innerHTML = \"<span style='color:#7F0000;'>TIME END: \"+tsmax+\" s</span>\";\n";
-    echo "			if(timeEnd != true) {\n";
-    echo "				timeEnd = true;\n";
-    echo "				document.getElementById(\"buttOK\").remove();\n";
-    echo "				document.getElementById(\"buttSK\").remove();\n";
-    echo "			}\n";
-	echo "		} else {\n";
-	echo "			document.getElementById(\"tempo\").innerHTML = tsrnd + \" s\";\n";
-	echo "		};\n";
+	echo "var timeEnd = false;\n";
+    echo "var tsmax = ".$jdat["time"].";";
+	echo "var eventTimer = new EventSource(\"gettime.cgi\");\n";
+	echo "eventTimer.onmessage = function(event) {\n";
+    echo "	var tsrnd = (event.data/1000).toFixed(1);\n";
+    echo "	if (tsrnd>tsmax) {\n";
+	echo "		document.getElementById(\"tempo\").innerHTML = \"<span style='color:#7F0000;'>TIME END: \"+tsmax+\" s</span>\";\n";
+	echo "		if(timeEnd != true) {\n";
+	echo "			timeEnd = true;\n";
+	echo "			document.getElementById(\"buttOK\").remove();\n";
+	echo "			document.getElementById(\"buttSK\").remove();\n";
+	echo "		}\n";
+	echo "	} else {\n";
+	echo "		document.getElementById(\"tempo\").innerHTML = tsrnd + \" s\";\n";
 	echo "	};\n";
-	echo "	xmlHttp.send();\n";
-	echo "}\n";
-	echo "setInterval(timeCounter, 50);\n";
+	echo "};\n";
 }
 
 ?>
@@ -142,9 +136,9 @@ if($showingcnt) {
   --c2: no-repeat linear-gradient(#00ff00 0 0);
   --c3: no-repeat linear-gradient(#0000ff 0 0);
   background: 
-    var(--c1) 0%   50%,
-    var(--c2) 50%  50%,
-    var(--c3) 100% 50%;
+	var(--c1) 0%   50%,
+	var(--c2) 50%  50%,
+	var(--c3) 100% 50%;
   animation: l7 1s infinite linear alternate;
   margin: auto;
 }
