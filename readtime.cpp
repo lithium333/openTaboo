@@ -1,4 +1,4 @@
-//COMPILE AS gettime.cgi
+//COMPILE AS readtime.bin
 
 #include "shmtimer.h"
 
@@ -35,16 +35,6 @@ int main(int argc, char* argv[]) {
         address_shm[0]=current_ts;
     auto differential_time = std::chrono::duration_cast<std::chrono::milliseconds>(current_ts - address_shm[0]);
 
-    // Output req!
-    std::cout << "Content-type: text/event-stream\r\nCache-Control: no-cache\r\nConnection: keep-alive" << std::endl << std::endl;
-    std::cout << differential_time.count() << std::endl << std::endl;
-    // LOOP
-    while(true) {
-        current_ts = std::chrono::system_clock::now();
-        differential_time = std::chrono::duration_cast<std::chrono::milliseconds>(current_ts - address_shm[0]);
-        std::cout << "data:" << differential_time.count() << std::endl << std::endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-    
+    std::cout << differential_time.count();
 
 }

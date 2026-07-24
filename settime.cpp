@@ -1,5 +1,7 @@
 //COMPILE AS settime.bin
 
+#include "shmtimer.h"
+
 #include <chrono>
 #include <iostream>
 #include <boost/interprocess/shared_memory_object.hpp>
@@ -7,14 +9,11 @@
 
 using namespace boost::interprocess;
 
-// Settings
-const char shm_name[] = "srv_taboo_db0";
-
 int main(int argc, char* argv[]) {
 
-    // Create Memory
-    std::size_t shm_size = sizeof(std::chrono::time_point<std::chrono::system_clock>);
-    shared_memory_object appdata_shm (open_or_create,shm_name,read_write);
+    // Open Memory
+    std::size_t shm_size = SHM_NTMR*sizeof(std::chrono::time_point<std::chrono::system_clock>);
+    shared_memory_object appdata_shm (open_or_create,SHM_NAME,read_write);
     appdata_shm.truncate(shm_size);
 
     // Map Memory

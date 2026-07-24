@@ -4,6 +4,12 @@ include "core.php";
 
 gamedataRead(); // VARIABLE : $jdat
 
+// Get timer status
+exec("./readtime.bin", $ret_value, $ret_code);
+
+if( ($ret_code!=0) or ($ret_value[0]>($jdat["time"]*1000)) )
+    die("<h1>Query fuori tempo</h1>");
+
 // Set points logic
 if(isset($_GET['success'])) {
     $turnoteam=$jdat['turno']%2;
