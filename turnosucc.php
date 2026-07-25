@@ -25,6 +25,7 @@ if($jdat["turno"]>=$jdat["nplayers"]) {
 $jdat["curskip"]=$jdat["skips"];
 gamedataWrite(); // VARIABLE : $jdat
 file_put_contents($path_card_current,$jcard_extracted_F); // INSERT EXTRACTED CARD
+exec("./tsEdit.bin");
 exec("./settime.bin");
 header("Location: admin.php");
 
