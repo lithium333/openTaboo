@@ -21,8 +21,8 @@ switch($jdat["state"]) {
 	case 1:
 		if(($jdat["players"][$_GET['id']-1])==null)
 			header("Location: player.php");
-		echo "<h2>Player: ".$jdat["players"][$_GET['id']-1]."</h2>\n";
-		echo "<h2>Aspetta che il caposala dia il via...</h2>\n";
+		echo "<h3>Player: ".$jdat["players"][$_GET['id']-1]."</h3>\n";
+		echo "<h3>Aspetta che il caposala dia il via...</h3>\n";
 		echo "<div class='loaderbar'></div>\n";
 		break;
 	case 2:
@@ -43,7 +43,7 @@ switch($jdat["state"]) {
 		$playerid=$_GET['id']-1;
 		$teamid=$playerid%2; // 0 red ; 1 blu
 		$turnoteam=$jdat['turno']%2;
-		echo "<h2>".$jdat["players"][$_GET['id']-1];
+		echo "<h3>".$jdat["players"][$_GET['id']-1];
 		if($teamid) {
 			echo " 🔵 ";
 			$ptteam=$jdat['ptB'];
@@ -53,12 +53,12 @@ switch($jdat["state"]) {
 		}
 		echo "[".$_GET['id']."]<br>\n";
 		// PRINT ROUND AND POINTS
-		echo "Round: ".($jdat['curround']+1)."/".$jdat['rounds']."<br>\n";
-		echo "PUNTI TEAM: ".$ptteam."<br>\n";
+		echo "ROUND: ".($jdat['curround']+1)."/".$jdat['rounds']."";
+		echo " - TEAM: ".$ptteam." pt<br></h3>\n";
 		if($jdat['state']==2) {
 			//gestione turno
 			if($playerid==$jdat['turno']) {
-				echo "<h2>TURNO TUO!</h2>\n";
+				echo "<h3>TURNO TUO!</h3>\n";
 				echo "<button id='buttOK' onclick=\"submitSuccess()\" name=\"success\">PRESA!</button>\n";
 				if($jdat['curskip']>0)
 					echo "<button id='buttSK' onclick=\"submitSkip()\" name=\"skipped\">PASSO: ".$jdat['curskip']."</button>\n";
@@ -67,9 +67,9 @@ switch($jdat["state"]) {
 				echo "<h2 style='text-align:center;'><span id='tempo'></span></h2>\n";
 			} else {
 				if($teamid==$turnoteam) {
-					echo "<h2>Turno del tuo team, INDOVINA ❓</h2>\n";
+					echo "<h3>Turno del tuo team, INDOVINA ❓</h3>\n";
 				} else {
-					echo "<h2>Turno del team avversario, CONTROLLA 👀</h2>\n";
+					echo "<h3>Turno team avversario, CONTROLLA 👀</h3>\n";
 					echo "<div class='loaderbar'></div>\n";
 					prtcarta();
 				}
@@ -84,8 +84,6 @@ switch($jdat["state"]) {
 </body>
 <script>
 
-var ts = <?php echo $jdat['lastwrite'];?>;
-
 function submitSuccess() {
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.open("GET", "./nextcard.php?success", false);
@@ -98,12 +96,7 @@ function submitSkip() {
 	xmlHttp.send();
 }
 
-var eventUpdate = new EventSource("getupdate.php");
-
-eventUpdate.onmessage = function(event) {   
-	if(ts!=event.data)
-		window.location.reload();
-};
+<?php getUpdates(); ?>
 
 <?php
 if($showingcnt) {

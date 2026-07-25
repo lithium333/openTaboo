@@ -22,5 +22,6 @@ int main(int argc, char* argv[]) {
 
     // Start Timer
     address_shm[0] = std::chrono::system_clock::now();
+    address_shm[1] = address_shm[0];
 
 }

@@ -17,8 +17,9 @@ if(isset($_GET['decred'])) {
 	die("<h1>Query non valida!</h1>");
 }
 
-$jdat['lastwrite']=time();
 gamedataWrite(); // VARIABLE : $jdat
+
+exec("./tsEdit.bin");
 
 header("Location: admin.php");
 

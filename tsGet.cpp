@@ -1,4 +1,4 @@
-//COMPILE AS readtime.bin
+//COMPILE AS tsGet.cgi
 
 #include "shmtimer.h"
 
@@ -35,8 +35,19 @@ int main(int argc, char* argv[]) {
         address_shm[0]=current_ts;
         address_shm[1]=current_ts;
     }
-    auto differential_time = std::chrono::duration_cast<std::chrono::milliseconds>(current_ts - address_shm[0]);
+    auto positional_time = std::chrono::duration_cast<std::chrono::milliseconds>(address_shm[1].time_since_epoch());
 
-    std::cout << differential_time.count();
+    // Output req!
+    std::cout << "Content-type: text/event-stream\r\nCache-Control: no-cache\r\nConnection: keep-alive" << std::endl << std::endl;
+    std::cout << "data:" << positional_time.count() << std::endl << std::endl;
+    // LOOP
+    while(true) {
+        auto old_pos_time = positional_time;
+        positional_time = std::chrono::duration_cast<std::chrono::milliseconds>(address_shm[1].time_since_epoch());
+        if(positional_time!=old_pos_time) {
+            std::cout << "data:" << positional_time.count() << std::endl << std::endl;
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
+    }
 
 }

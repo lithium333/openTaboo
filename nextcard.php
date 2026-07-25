@@ -36,7 +36,8 @@ cardsExtract(); // VARIABLE : $jcard_extracted_F
 cardsPut();
 file_put_contents($path_card_current,$jcard_extracted_F); // INSERT EXTRACTED CARD
 
-$jdat['lastwrite']=time();
 gamedataWrite(); // VARIABLE : $jdat
+
+exec("./tsEdit.bin");
 
 ?>

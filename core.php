@@ -45,4 +45,15 @@ function cardsPut() {
     file_put_contents($path_cards_available,$jcardsDB_F);
 }
 
+// Get Updates to refresh
+function getUpdates() {
+    exec("./tsRead.bin", $ret_value);
+    echo "var ts = ".$ret_value[0].";\n";
+    echo "var eventUpdate = new EventSource(\"tsGet.cgi\");\n";
+    echo "eventUpdate.onmessage = function(event) {\n";
+    echo "if(ts!=event.data)\n";
+    echo "window.location.reload();\n";
+    echo "};\n";
+}
+
 ?>

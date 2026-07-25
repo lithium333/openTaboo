@@ -6,9 +6,10 @@ gamedataRead(); // VARIABLE : $jdat
 
 $jdat["state"]=0;
 $jdat["players"]=[];
-$jdat['lastwrite']=time();
 
 gamedataWrite(); // VARIABLE : $jdat
+
+exec("./tsEdit.bin");
 
 header("Location: admin.php");
 

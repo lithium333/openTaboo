@@ -15,9 +15,10 @@ if($jdat['players'][$_GET['slot']-1]!=null) {
 
 // write changes
 $jdat['players'][$_GET['slot']-1]=$_GET['nick'];
-$jdat['lastwrite']=time();
 
 gamedataWrite(); // VARIABLE : $jdat
+
+exec("./tsEdit.bin");
 
 header("Location: run.php?id=".$_GET['slot']);
 

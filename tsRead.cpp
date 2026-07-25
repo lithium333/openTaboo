@@ -1,4 +1,4 @@
-//COMPILE AS readtime.bin
+//COMPILE AS tsRead.bin
 
 #include "shmtimer.h"
 
@@ -35,8 +35,8 @@ int main(int argc, char* argv[]) {
         address_shm[0]=current_ts;
         address_shm[1]=current_ts;
     }
-    auto differential_time = std::chrono::duration_cast<std::chrono::milliseconds>(current_ts - address_shm[0]);
+    auto positional_time = std::chrono::duration_cast<std::chrono::milliseconds>(address_shm[1].time_since_epoch());
 
-    std::cout << differential_time.count();
+    std::cout << positional_time.count();
 
 }

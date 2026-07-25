@@ -51,22 +51,9 @@ switch($jdat["state"]) {
 
 ?>
 </body>
-
 <script>
 
-var ts = <?php echo $jdat['lastwrite'];?>;
-var refreshInhibit = false;
-
-function stopRefresh() {
-    refreshInhibit = true;
-}
-
-var eventUpdate = new EventSource("getupdate.php");
-
-eventUpdate.onmessage = function(event) {   
-    if(ts!=event.data)
-        window.location.reload();
-};
+<?php getUpdates(); ?>
     
 </script>
 <style>

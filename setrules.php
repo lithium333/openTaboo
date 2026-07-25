@@ -28,9 +28,9 @@ for($i=0;$i<$jdat["nplayers"];$i++) {
 	$jdat["players"][] = null;
 }
 $jdat["state"]=1;
-$jdat['lastwrite']=time();
 gamedataWrite(); // VARIABLE : $jdat
 
+exec("./tsEdit.bin");
 
 header("Location: admin.php");
 
