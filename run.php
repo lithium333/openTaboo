@@ -3,8 +3,9 @@
 <head>
   <title>openTaboo Player</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+
 <body>
 <h1 style='text-align:center;'>openTaboo</h1>
 <?php
@@ -31,7 +32,7 @@ switch($jdat["state"]) {
 			global $path_card_current;
 			$jcartaraw = file_get_contents($path_card_current);
 			$jcartadat = json_decode($jcartaraw,true);
-			echo "<div style='border:3px solid;width:250px;margin:0 auto;margin-top:32px;border-radius:12px;'>\n";
+			echo "<div class='carta'>\n";
 			echo "<h2 style='text-align:center;color:darkblue;' >".$jcartadat["soluz"]."</h2>\n";
 			foreach($jcartadat["vietato"] as $parolabandita)
 				echo "<h3 style='text-align:center;color:darkorange;' >".$parolabandita."</h3>\n";
@@ -63,25 +64,28 @@ switch($jdat["state"]) {
 				if($jdat['curskip']>0)
 					echo "<button id='buttSK' onclick=\"submitSkip()\" name=\"skipped\">PASSO: ".$jdat['curskip']."</button>\n";
 				prtcarta();
-				$showingcnt=true;
-				echo "<h2 style='text-align:center;'><span id='tempo'></span></h2>\n";
 			} else {
 				if($teamid==$turnoteam) {
 					echo "<h3>Turno del tuo team, INDOVINA ❓</h3>\n";
+					echo "<div class='carta'>\n";
+					echo "<p style='text-align:center;font-size:40vh;color:blue;margin: 0 0;'>?</p>";
+					echo "</div>\n";
 				} else {
 					echo "<h3>Turno team avversario, CONTROLLA 👀</h3>\n";
-					echo "<div class='loaderbar'></div>\n";
 					prtcarta();
 				}
 			}
+            $showingcnt=true;
+		    echo "<h2 style='text-align:center;'><span id='tempo'>XX.X</span></h2>\n";
 		} else {
 			echo "<h2>GAME END!</h2>\n";
 		}
 	default:
 		//unmanaged
 }
+
 ?>
-</body>
+
 <script>
 
 function submitSuccess() {
@@ -96,32 +100,40 @@ function submitSkip() {
 	xmlHttp.send();
 }
 
-<?php getUpdates(); ?>
-
 <?php
+getUpdates();
 if($showingcnt) {
 	echo "var timeEnd = false;\n";
     echo "var tsmax = ".$jdat["time"].";";
-	echo "var eventTimer = new EventSource(\"gettime.cgi\");\n";
+	echo "var eventTimer = new EventSource(\"nph-gettime.cgi\");\n";
 	echo "eventTimer.onmessage = function(event) {\n";
     echo "	var tsrnd = (event.data/1000).toFixed(1);\n";
     echo "	if (tsrnd>tsmax) {\n";
 	echo "		document.getElementById(\"tempo\").innerHTML = \"<span style='color:#7F0000;'>TIME END: \"+tsmax+\" s</span>\";\n";
 	echo "		if(timeEnd != true) {\n";
 	echo "			timeEnd = true;\n";
-	echo "			document.getElementById(\"buttOK\").remove();\n";
-	echo "			document.getElementById(\"buttSK\").remove();\n";
+    if($playerid==$jdat['turno']) {
+	echo "				document.getElementById(\"buttOK\").remove();\n";
+	echo "				document.getElementById(\"buttSK\").remove();\n";
+ 	}
 	echo "		}\n";
 	echo "	} else {\n";
 	echo "		document.getElementById(\"tempo\").innerHTML = tsrnd + \" s\";\n";
 	echo "	};\n";
 	echo "};\n";
 }
-
 ?>
-
 </script>
+
 <style>
+.carta {
+  border:3px solid;
+  width:250px;
+  height:45vh;
+  margin:0 auto;
+  margin-top:32px;
+  border-radius:12px;
+}
 .loaderbar {
   width: 48px;
   aspect-ratio: .75;
@@ -144,4 +156,6 @@ if($showingcnt) {
   100%{background-size: 20% 50% ,20% 50% ,20% 50% }
 }
 </style>
+
+</body>
 </html>

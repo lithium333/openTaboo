@@ -16,7 +16,7 @@ gamedataRead(); // VARIABLE : $jdat
 // Game State -> 0: INIT, 1: PLAYER ENTERING, 2: RUNNING
 switch($jdat["state"]) {
 	case 0:
-		echo "<h2>Attendere che il caposala imposti i parametri...</h2>";
+		echo "<h2 style='text-align:center;'>Attendere che il caposala imposti i parametri...</h2>";
 		echo "<div class='loaderbar'></div>\n";
 		break;
 	case 1:

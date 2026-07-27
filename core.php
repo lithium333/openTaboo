@@ -49,7 +49,7 @@ function cardsPut() {
 function getUpdates() {
     exec("./tsRead.bin", $ret_value);
     echo "var ts = ".$ret_value[0].";\n";
-    echo "var eventUpdate = new EventSource(\"tsGet.cgi\");\n";
+    echo "var eventUpdate = new EventSource(\"nph-tsGet.cgi\");\n";
     echo "eventUpdate.onmessage = function(event) {\n";
     echo "if(ts!=event.data)\n";
     echo "window.location.reload();\n";
