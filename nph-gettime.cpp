@@ -1,4 +1,4 @@
-//COMPILE AS gettime.cgi
+//COMPILE AS nph-gettime.cgi
 
 #include "shmtimer.h"
 

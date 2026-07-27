@@ -1,4 +1,4 @@
-//COMPILE AS tsGet.cgi
+//COMPILE AS nph-tsGet.cgi
 
 #include "shmtimer.h"
 
