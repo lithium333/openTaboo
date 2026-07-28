@@ -1,8 +1,49 @@
+body { background-color: #DFDFFF;}
+
 button {
-    background-color: #00cf00;
-    border:2px solid black;
+    background-color: white;
+    border:2px solid #00ff00;
     border-radius: 4px;
     text-align: center;
-    color: #ffffff;
+    color: black;
     font-size: 3vh;
+}
+button:hover {
+    background-color: #00ff00;
+    border:2px solid #00ff00;
+    border-radius: 4px;
+    text-align: center;
+    color: white;
+    font-size: 3vh;
+}
+
+.carta {
+  border:3px solid;
+  width:250px;
+  height:45vh;
+  margin:0 auto;
+  margin-top:32px;
+  border-radius:12px;
+}
+
+.loaderbar {
+  width: 48px;
+  aspect-ratio: .75;
+  --c1: no-repeat linear-gradient(#ff0000 0 0);
+  --c2: no-repeat linear-gradient(#00ff00 0 0);
+  --c3: no-repeat linear-gradient(#0000ff 0 0);
+  background: 
+	var(--c1) 0%   50%,
+	var(--c2) 50%  50%,
+	var(--c3) 100% 50%;
+  animation: l7 1s infinite linear alternate;
+  margin: auto;
+}
+@keyframes l7 {
+  0%  {background-size: 20% 50% ,20% 50% ,20% 50% }
+  20% {background-size: 20% 20% ,20% 50% ,20% 50% }
+  40% {background-size: 20% 100%,20% 20% ,20% 50% }
+  60% {background-size: 20% 50% ,20% 100%,20% 20% }
+  80% {background-size: 20% 50% ,20% 50% ,20% 100%}
+  100%{background-size: 20% 50% ,20% 50% ,20% 50% }
 }

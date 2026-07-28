@@ -19,7 +19,6 @@ $jdat['players'][$_GET['slot']-1]=$_GET['nick'];
 gamedataWrite(); // VARIABLE : $jdat
 
 exec("./tsEdit.bin");
-
 header("Location: run.php?id=".$_GET['slot']);
 
 ?>

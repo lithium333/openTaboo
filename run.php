@@ -4,11 +4,15 @@
   <title>openTaboo Player</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-<h1 style='text-align:center;'>openTaboo</h1>
+<h1 style='text-align:center;'>openTaboo
 <?php
+
+if(!isset($_GET["id"]))
+	header("Location: player.php");
 
 include "core.php";
 
@@ -22,6 +26,7 @@ switch($jdat["state"]) {
 	case 1:
 		if(($jdat["players"][$_GET['id']-1])==null)
 			header("Location: player.php");
+		echo "⏳</h1>\n"; // <h1> closing
 		echo "<h3>Player: ".$jdat["players"][$_GET['id']-1]."</h3>\n";
 		echo "<h3>Aspetta che il caposala dia il via...</h3>\n";
 		echo "<div class='loaderbar'></div>\n";
@@ -40,6 +45,7 @@ switch($jdat["state"]) {
 			
 		}
 	case 3:
+        echo "🎮</h1>\n"; // <h1> closing
 		// HEAD PLAYER PAGE
 		$playerid=$_GET['id']-1;
 		$teamid=$playerid%2; // 0 red ; 1 blu
@@ -60,9 +66,6 @@ switch($jdat["state"]) {
 			//gestione turno
 			if($playerid==$jdat['turno']) {
 				echo "<h3>TURNO TUO!</h3>\n";
-				echo "<button id='buttOK' onclick=\"submitSuccess()\" name=\"success\">PRESA!</button>\n";
-				if($jdat['curskip']>0)
-					echo "<button id='buttSK' onclick=\"submitSkip()\" name=\"skipped\">PASSO: ".$jdat['curskip']."</button>\n";
 				prtcarta();
 			} else {
 				if($teamid==$turnoteam) {
@@ -76,7 +79,12 @@ switch($jdat["state"]) {
 				}
 			}
             $showingcnt=true;
-		    echo "<h2 style='text-align:center;'><span id='tempo'>XX.X</span></h2>\n";
+		    echo "<h2 style='text-align:center;'><span id='tempo'>&nbsp;</span></h2>\n";
+            if($playerid==$jdat['turno']) {
+                echo "<button id='buttOK' onclick=\"submitSuccess()\" name=\"success\">PRESA!</button>\n";
+				if($jdat['curskip']>0)
+					echo "<button id='buttSK' onclick=\"submitSkip()\" name=\"skipped\">PASSO: ".$jdat['curskip']."</button>\n";
+            }
 		} else {
 			echo "<h2>GAME END!</h2>\n";
 		}
@@ -124,38 +132,6 @@ if($showingcnt) {
 }
 ?>
 </script>
-
-<style>
-.carta {
-  border:3px solid;
-  width:250px;
-  height:45vh;
-  margin:0 auto;
-  margin-top:32px;
-  border-radius:12px;
-}
-.loaderbar {
-  width: 48px;
-  aspect-ratio: .75;
-  --c1: no-repeat linear-gradient(#ff0000 0 0);
-  --c2: no-repeat linear-gradient(#00ff00 0 0);
-  --c3: no-repeat linear-gradient(#0000ff 0 0);
-  background: 
-	var(--c1) 0%   50%,
-	var(--c2) 50%  50%,
-	var(--c3) 100% 50%;
-  animation: l7 1s infinite linear alternate;
-  margin: auto;
-}
-@keyframes l7 {
-  0%  {background-size: 20% 50% ,20% 50% ,20% 50% }
-  20% {background-size: 20% 20% ,20% 50% ,20% 50% }
-  40% {background-size: 20% 100%,20% 20% ,20% 50% }
-  60% {background-size: 20% 50% ,20% 100%,20% 20% }
-  80% {background-size: 20% 50% ,20% 50% ,20% 100%}
-  100%{background-size: 20% 50% ,20% 50% ,20% 50% }
-}
-</style>
 
 </body>
 </html>

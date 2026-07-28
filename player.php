@@ -6,7 +6,7 @@
 </head>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <body>
-<h1 style='text-align:center;'>openTaboo</h1>
+<h1 style='text-align:center;'>openTaboo
 <?php
 
 include "core.php";
@@ -16,10 +16,12 @@ gamedataRead(); // VARIABLE : $jdat
 // Game State -> 0: INIT, 1: PLAYER ENTERING, 2: RUNNING
 switch($jdat["state"]) {
 	case 0:
+        echo "⏳</h1>\n"; // <h1> closing
 		echo "<h2 style='text-align:center;'>Attendere che il caposala imposti i parametri...</h2>";
-		echo "<div class='loaderbar'></div>\n";
+		echo "<div class='loaderbar' style='margin-top: 20vh;'></div>\n";
 		break;
 	case 1:
+        echo "📝</h1>\n"; // <h1> closing
 		echo "<form action='join.php' method='get'>\n";
 		echo "<h2>Scegli il tuo nome:</h2>\n";
 		echo "<input type='textbox' name='nick' id='nick'>\n";
@@ -37,6 +39,7 @@ switch($jdat["state"]) {
 		echo "</form>\n";
 		break;
 	case 2:
+        echo "🕹️</h1>\n"; // <h1> closing
 		echo "<h2>VAI ALLA TUA PAGINA:</h2>\n";
 		for($i=0;$i<$jdat["nplayers"];$i++) {
 			if($i%2)
@@ -54,11 +57,15 @@ switch($jdat["state"]) {
 <script>
 
 <?php getUpdates(); ?>
+
+function stopRefresh() {
+    eventUpdate.close();
+}
     
 </script>
 <style>
 .loaderbar {
-  width: 48px;
+  width: 64px;
   aspect-ratio: .75;
   --c1: no-repeat linear-gradient(#ff0000 0 0);
   --c2: no-repeat linear-gradient(#00ff00 0 0);
