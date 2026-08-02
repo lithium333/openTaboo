@@ -2,7 +2,7 @@
 
 include "core.php";
 
-// Exract card and remove
+// Extract card and remove
 cardsLoad();
 if($card_count==0) { //refresh cards no more available
     cardsInit();
@@ -27,6 +27,5 @@ gamedataWrite(); // VARIABLE : $jdat
 file_put_contents($path_card_current,$jcard_extracted_F); // INSERT EXTRACTED CARD
 exec("./tsEdit.bin");
 exec("./settime.bin");
-header("Location: admin.php");
 
 ?>

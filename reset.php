@@ -11,6 +11,4 @@ gamedataWrite(); // VARIABLE : $jdat
 
 exec("./tsEdit.bin");
 
-header("Location: admin.php");
-
 ?>

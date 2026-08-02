@@ -23,6 +23,4 @@ exec("./tsEdit.bin");
 
 exec("./settime.bin");
 
-header("Location: admin.php");
-
 ?>

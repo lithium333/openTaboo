@@ -69,13 +69,14 @@ switch($jdat["state"]) {
 				prtcarta();
 			} else {
 				if($teamid==$turnoteam) {
-					echo "<h3>Turno del tuo team, INDOVINA ❓</h3>\n";
+					echo "<h3>Turno del tuo team, indovina</h3>\n";
 					echo "<div class='carta'>\n";
 					echo "<p style='text-align:center;font-size:40vh;color:blue;margin: 0 0;'>?</p>";
 					echo "</div>\n";
 				} else {
-					echo "<h3>Turno team avversario, CONTROLLA 👀</h3>\n";
-					prtcarta();
+                    echo "<h3>Turno team avversario, CONTROLLA 👀</h3>\n";
+                    prtcarta();
+					
 				}
 			}
             $showingcnt=true;

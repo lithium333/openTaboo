@@ -7,15 +7,35 @@ $g_rounds = $_GET['rounds'];
 $g_skips = $_GET['skips'];
 $g_nplayers = $_GET['nplayers'];
 
-// Game Rules
-if($g_time<=0)
-	die("<h1>Il turno deve durare un numero positivo e diverso da 0 di secondi!</h1>");
-if($g_rounds<1)
-	die("<h1>Deve esserci almeno un turno!</h1>");
-if($g_skips<0)
-	die("<h1>Specificare un valore positivo o nullo per i passo!</h1>");
-if($g_nplayers<4)
-	die("<h1>Almeno 4 giocatori è un must!</h1>");
+// Rule 1 : Time Positive.
+if($g_time<0) {
+	http_response_code(400);
+	die("Il turno deve durare un numero positivo e diverso da 0 di secondi!");
+}
+
+// Rule 2 : Rounds Positive.
+if($g_rounds<1) {
+	http_response_code(400);
+	die("Deve esserci almeno un turno!");
+}
+
+// Rule 3 : Skips not negative.
+if($g_skips<0) {
+	http_response_code(400);
+    die("Specificare un valore positivo o nullo per i passo!");
+}
+
+// Rule 4 : Minimum 4 players.
+if($g_nplayers<4) {
+	http_response_code(400);
+	die("Almeno 4 giocatori!");
+}
+
+// Rule 5 : No odd players.
+if($g_nplayers%2) {
+	http_response_code(400);
+	die("I giocatori devono essere in numero pari!");
+}
 
 // GameData Change
 gamedataRead(); // VARIABLE : $jdat
@@ -31,7 +51,5 @@ $jdat["state"]=1;
 gamedataWrite(); // VARIABLE : $jdat
 
 exec("./tsEdit.bin");
-
-header("Location: admin.php");
 
 ?>
