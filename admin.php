@@ -4,6 +4,31 @@
   <title>openTaboo Admin</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <meta charset="UTF-8">
+  <style>
+  .controllerButton {
+  font-size: 1em;
+  padding: 2px 2px 2px 2px;
+  color: red;
+  background: white;
+  border-width: 3px;
+  border-style: solid;
+  border-color: red;
+  border-radius: 6px;
+  }
+  .controllerButton:hover {
+  color: black;
+  background: yellow;
+  }
+  .tastoPunteggio {
+  border: 2px solid transparent;
+  background: transparent;
+  padding: 0 0 0 0;
+  font-size: inherit;
+  }
+  .tastoPunteggio:hover {
+  border: 2px solid blue;
+  }
+  </style>
 </head>
 <body>
 <h1 style="color:green;text-align:center;">openTaboo Admin 🛡️</h1>
@@ -26,7 +51,7 @@ switch($jdat["state"]) {
 		echo "<br>Giocatori:<br>\n";
 		echo "<input type='number' id='nplayers'  name='nplayers' value='".$jdat["nplayers"]."' /><br>\n";
 		echo "</form>\n";
-		echo "<h3>📥&nbsp;<a href='javascript:setRules();'>NEXT</a></h3>";
+		echo "<p><button class='controllerButton' onclick='javascript:setRules();'>📥&nbsp;NEXT</button></p>";
 		break;
 	case 1: // PLAYER BOARDING
 		echo "<h2>👤&nbsp;GIOCATORI</h2>\n";
@@ -44,34 +69,37 @@ switch($jdat["state"]) {
 			}
 		}
 		if($complete) {
-			echo "<h3>▶️&nbsp;<a href='javascript:startGame();'>START</a></h3>";
+			echo "<p><button class='controllerButton' onclick='javascript:startGame();'>▶️&nbsp;START</button></p>";
 		}
-		echo "<h3>❌&nbsp;<a href='javascript:resetRules();'>RESET</a></h3>";
+		echo "<p><button class='controllerButton' onclick='javascript:resetRules();'>❌&nbsp;RESET</button></p>";
 		
 		break;
 	case 2: // GAME RUNNING
 	case 3: // GAME END
 		echo "<h2>👤&nbsp;GIOCATORI</h2>\n";
+        $stringa_red = "";
+        $stringa_blu = "";
 		for($i=0;$i<$jdat["nplayers"];$i++) {
 			if($i%2)
-				echo "<h3>&nbsp;&nbsp;🔵 ";
+				$stringa_blu=$stringa_blu.htmlentities($jdat["players"][$i])." [".($i+1)."] ";
 			else
-				echo "<h3>&nbsp;&nbsp;🔴 ";
-			echo htmlentities($jdat["players"][$i])." [".($i+1)."]</h3>\n";
+				$stringa_red=$stringa_red.htmlentities($jdat["players"][$i])." [".($i+1)."] ";
 		}
+		echo "<h3>&nbsp;&nbsp;🔴 ".$stringa_red."</h3>\n";
+        echo "<h3>&nbsp;&nbsp;🔵 ".$stringa_blu."</h3>\n";   
 		echo "<h2>🎯&nbsp;PUNTEGGI</h3>";
-		echo "<h3>&nbsp;&nbsp;🔴 <a style='text-decoration:none' href=\"javascript:setPt('decred')\">-</a>";
+		echo "<h3>&nbsp;&nbsp;🔴 <button class='tastoPunteggio' onclick=\"javascript:setPt('decred');\">🔽</button>";
 		echo "&nbsp;".$jdat["ptA"]." pt&nbsp;";
-		echo "<a style='text-decoration:none' href=\"javascript:setPt('incred')\">+</a></h3>";
-		echo "<h3>&nbsp;&nbsp;🔵 <a style='text-decoration:none' href=\"javascript:setPt('decblue')\">-</a>";
+		echo "<button class='tastoPunteggio' onclick=\"javascript:setPt('incred');\">🔼</button></h3>";
+		echo "<h3>&nbsp;&nbsp;🔵 <button class='tastoPunteggio' onclick=\"javascript:setPt('decblue');\">🔽</button>";
 		echo "&nbsp;".$jdat["ptB"]." pt&nbsp;";
-		echo "<a style='text-decoration:none' href=\"javascript:setPt('incblue')\">+</a></h3>";
+		echo "<button class='tastoPunteggio' onclick=\"javascript:setPt('incblue');\">🔼</button></h3>";
 		echo "<h3>Round: ".($jdat["curround"]+1)."/".$jdat["rounds"];
 		if($jdat["state"]==2)
 			echo " Turno: ".($jdat["turno"]+1);
 		echo "</h3>\n";
-		if($jdat["state"]==2) echo "<h3>⏩&nbsp;<a style='text-decoration:none' href='javascript:nextShift();'>AVANTI</a></h3>";
-		echo "<h3>❌&nbsp;<a href='javascript:resetRules();'>RESET</a></h3>";
+		if($jdat["state"]==2) echo "<p><button class='controllerButton' onclick='javascript:nextShift();'>⏩&nbsp;AVANTI</button></p>";
+		echo "<p><button class='controllerButton' onclick='javascript:resetRules();'>❌&nbsp;RESET</button></p>";
 		break;
 	default:
 		//umanaged

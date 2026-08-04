@@ -3,10 +3,9 @@
 <head>
   <title>openTaboo Player</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
-
 <body>
 <h1 style='text-align:center;'>openTaboo
 <?php
@@ -27,54 +26,53 @@ switch($jdat["state"]) {
 		if(($jdat["players"][$_GET['id']-1])==null)
 			header("Location: player.php");
 		echo "⏳</h1>\n"; // <h1> closing
-		echo "<h3>Player: ".$jdat["players"][$_GET['id']-1]."</h3>\n";
-		echo "<h3>Aspetta che il caposala dia il via...</h3>\n";
+		echo "<h3 style='text-align:center;'>Player: ".$jdat["players"][$_GET['id']-1]."</h3>\n";
+		echo "<h3 style='text-align:center;'>Aspetta che il caposala dia il via...</h3>\n";
 		echo "<div class='loaderbar'></div>\n";
 		break;
-	case 2:
+	case 2: // only state 2
 		// FUNC PRINT CARD
 		function prtcarta() {
 			global $path_card_current;
 			$jcartaraw = file_get_contents($path_card_current);
 			$jcartadat = json_decode($jcartaraw,true);
 			echo "<div class='carta'>\n";
-			echo "<h2 style='text-align:center;color:darkblue;' >".$jcartadat["soluz"]."</h2>\n";
+			echo "<h2 class='cartaSoluzione' >".$jcartadat["soluz"]."</h2>\n";
 			foreach($jcartadat["vietato"] as $parolabandita)
-				echo "<h3 style='text-align:center;color:darkorange;' >".$parolabandita."</h3>\n";
+				echo "<h3 class='cartaParole'>".$parolabandita."</h3>\n";
 			echo "</div>\n";
 			
 		}
-	case 3:
+	case 3: // both 2 and 3 states
         echo "🎮</h1>\n"; // <h1> closing
 		// HEAD PLAYER PAGE
 		$playerid=$_GET['id']-1;
 		$teamid=$playerid%2; // 0 red ; 1 blu
 		$turnoteam=$jdat['turno']%2;
-		echo "<h3>".$jdat["players"][$_GET['id']-1];
+		echo "<h3 style='text-align:center;'>".$jdat["players"][$_GET['id']-1]." [".$_GET['id']."]";
 		if($teamid) {
-			echo " 🔵 ";
+			echo " 🔵<br>\n";
 			$ptteam=$jdat['ptB'];
 		} else {
-			echo " 🔴 ";
+			echo " 🔴<br>\n";
 			$ptteam=$jdat['ptA'];
 		}
-		echo "[".$_GET['id']."]<br>\n";
 		// PRINT ROUND AND POINTS
 		echo "ROUND: ".($jdat['curround']+1)."/".$jdat['rounds']."";
 		echo " - TEAM: ".$ptteam." pt<br></h3>\n";
 		if($jdat['state']==2) {
 			//gestione turno
 			if($playerid==$jdat['turno']) {
-				echo "<h3>TURNO TUO!</h3>\n";
+				echo "<h3 style='text-align:center;'>TURNO TUO!</h3>\n";
 				prtcarta();
 			} else {
 				if($teamid==$turnoteam) {
-					echo "<h3>Turno del tuo team, indovina</h3>\n";
+					echo "<h3 style='text-align:center;'>Turno del tuo team, indovina!</h3>\n";
 					echo "<div class='carta'>\n";
 					echo "<p style='text-align:center;font-size:40vh;color:blue;margin: 0 0;'>?</p>";
 					echo "</div>\n";
 				} else {
-                    echo "<h3>Turno team avversario, CONTROLLA 👀</h3>\n";
+                    echo "<h3 style='text-align:center;'>Turno team avversario... 👀</h3>\n";
                     prtcarta();
 					
 				}
@@ -82,9 +80,11 @@ switch($jdat["state"]) {
             $showingcnt=true;
 		    echo "<h2 style='text-align:center;'><span id='tempo'>&nbsp;</span></h2>\n";
             if($playerid==$jdat['turno']) {
-                echo "<button id='buttOK' onclick=\"submitSuccess()\" name=\"success\">PRESA!</button>\n";
+				echo "<p style='text-align:center;'>\n";
+                echo "<button class='tastoGiocatore' id='buttOK' onclick=\"submitSuccess()\" name=\"success\">PRESA!</button>\n";
 				if($jdat['curskip']>0)
-					echo "<button id='buttSK' onclick=\"submitSkip()\" name=\"skipped\">PASSO: ".$jdat['curskip']."</button>\n";
+					echo "<button class='tastoGiocatore' id='buttSK' onclick=\"submitSkip()\" name=\"skipped\">PASSO: ".$jdat['curskip']."</button>\n";
+				echo "<p>\n";
             }
 		} else {
 			echo "<h2>GAME END!</h2>\n";

@@ -1,14 +1,14 @@
 body { background-color: #DFDFFF;}
 
-button {
+.tastoGiocatore {
     background-color: white;
-    border:2px solid #00ff00;
+    border:2px solid #0000ff;
     border-radius: 4px;
     text-align: center;
     color: black;
     font-size: 3vh;
 }
-button:active {
+.tastoGiocatore:active {
     background-color: #00ff00;
     border:2px solid #00ff00;
     border-radius: 4px;
@@ -24,10 +24,30 @@ button:active {
   margin:0 auto;
   margin-top:32px;
   border-radius:12px;
+  background-image: radial-gradient(#cfffcf,#cfffff,#bfbfff);
+}
+
+.cartaSoluzione {
+  text-align: center;
+  color: darkblue;
+}
+
+.cartaParole {
+  text-align: center;
+  color: darkorange;
+}
+
+.formContainer {
+ width: 80%;
+ padding: 5% 5% 5% 5%;
+ border: 2px solid black;
+ border-radius: 16px;
+ background-image: linear-gradient(45deg, lime, yellow);
+ margin: auto;
 }
 
 .loaderbar {
-  width: 48px;
+  width: 64px;
   aspect-ratio: .75;
   --c1: no-repeat linear-gradient(#ff0000 0 0);
   --c2: no-repeat linear-gradient(#00ff00 0 0);
@@ -38,6 +58,7 @@ button:active {
 	var(--c3) 100% 50%;
   animation: l7 1s infinite linear alternate;
   margin: auto;
+  margin-top: 20vh;
 }
 @keyframes l7 {
   0%  {background-size: 20% 50% ,20% 50% ,20% 50% }
