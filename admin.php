@@ -40,7 +40,7 @@ gamedataRead(); // VARIABLE : $jdat
 
 // Game State -> 0: INIT, 1: PLAYER ENTERING, 2: RUNNING, 3: END
 switch($jdat["state"]) {
-	case 0: // START
+	case STATE_INIT: // START
 		echo "<form action='javascript:setRules();' method='get' id='rulesForm' name='rulesForm'>\n";
 		echo "<br>Tempo [s]:<br>\n";
 		echo "<input type='number' id='time'  name='time' value='".$jdat["time"]."' /><br>\n";
@@ -53,7 +53,7 @@ switch($jdat["state"]) {
 		echo "</form>\n";
 		echo "<p><button class='controllerButton' onclick='javascript:setRules();'>📥&nbsp;NEXT</button></p>";
 		break;
-	case 1: // PLAYER BOARDING
+	case STATE_JOIN: // PLAYER BOARDING
 		echo "<h2>👤&nbsp;GIOCATORI</h2>\n";
 		$complete=true;
 		for($i=0;$i<$jdat["nplayers"];$i++) {
@@ -74,8 +74,8 @@ switch($jdat["state"]) {
 		echo "<p><button class='controllerButton' onclick='javascript:resetRules();'>❌&nbsp;RESET</button></p>";
 		
 		break;
-	case 2: // GAME RUNNING
-	case 3: // GAME END
+	case STATE_PLAY: // GAME RUNNING
+	case STATE_STOP: // GAME END
 		echo "<h2>👤&nbsp;GIOCATORI</h2>\n";
         $stringa_red = "";
         $stringa_blu = "";
@@ -95,10 +95,10 @@ switch($jdat["state"]) {
 		echo "&nbsp;".$jdat["ptB"]." pt&nbsp;";
 		echo "<button class='tastoPunteggio' onclick=\"javascript:setPt('incblue');\">🔼</button></h3>";
 		echo "<h3>Round: ".($jdat["curround"]+1)."/".$jdat["rounds"];
-		if($jdat["state"]==2)
+		if($jdat["state"]==STATE_PLAY)
 			echo " Turno: ".($jdat["turno"]+1);
 		echo "</h3>\n";
-		if($jdat["state"]==2) echo "<p><button class='controllerButton' onclick='javascript:nextShift();'>⏩&nbsp;AVANTI</button></p>";
+		if($jdat["state"]==STATE_PLAY) echo "<p><button class='controllerButton' onclick='javascript:nextShift();'>⏩&nbsp;AVANTI</button></p>";
 		echo "<p><button class='controllerButton' onclick='javascript:resetRules();'>❌&nbsp;RESET</button></p>";
 		break;
 	default:

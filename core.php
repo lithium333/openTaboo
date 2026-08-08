@@ -1,5 +1,12 @@
 <?php
 
+// GAME-STATES
+
+const STATE_INIT = 0;
+const STATE_JOIN = 1;
+const STATE_PLAY = 2;
+const STATE_STOP = 3;
+
 // Relative path to JSON files
 $path_gamedata = "game.json";
 $path_card_current = "./cards/carta.json";

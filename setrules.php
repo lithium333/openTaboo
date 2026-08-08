@@ -47,7 +47,7 @@ $jdat["players"]=[];
 for($i=0;$i<$jdat["nplayers"];$i++) {
 	$jdat["players"][] = null;
 }
-$jdat["state"]=1;
+$jdat["state"]=STATE_JOIN;
 gamedataWrite(); // VARIABLE : $jdat
 
 exec("./tsEdit.bin");

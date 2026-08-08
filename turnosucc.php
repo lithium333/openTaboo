@@ -16,7 +16,7 @@ $jdat["turno"]++;
 if($jdat["turno"]>=$jdat["nplayers"]) {
     $jdat["curround"]++;
     if($jdat["curround"]>=$jdat["rounds"]) {
-        $jdat["state"]=3; // rounds end
+        $jdat["state"]=STATE_STOP; // rounds end
         $jdat["curround"]=$jdat["rounds"]-1;
     } else {
         $jdat["turno"]=0;

@@ -4,7 +4,7 @@ include "core.php";
 
 gamedataRead(); // VARIABLE : $jdat
 
-$jdat["state"]=0;
+$jdat["state"]=STATE_INIT;
 $jdat["players"]=[];
 
 gamedataWrite(); // VARIABLE : $jdat

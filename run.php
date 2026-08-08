@@ -19,10 +19,10 @@ gamedataRead(); // VARIABLE : $jdat
 
 $showingcnt=false;
 switch($jdat["state"]) {
-	case 0:
+	case STATE_INIT:
 		header("Location: player.php");
 		break;
-	case 1:
+	case STATE_JOIN:
 		if(($jdat["players"][$_GET['id']-1])==null)
 			header("Location: player.php");
 		echo "⏳</h1>\n"; // <h1> closing
@@ -30,7 +30,7 @@ switch($jdat["state"]) {
 		echo "<h3 style='text-align:center;'>Aspetta che il caposala dia il via...</h3>\n";
 		echo "<div class='loaderbar'></div>\n";
 		break;
-	case 2: // only state 2
+	case STATE_PLAY: // only state 2
 		// FUNC PRINT CARD
 		function prtcarta() {
 			global $path_card_current;
@@ -43,7 +43,7 @@ switch($jdat["state"]) {
 			echo "</div>\n";
 			
 		}
-	case 3: // both 2 and 3 states
+	case STATE_STOP: // both 2 and 3 states
         echo "🎮</h1>\n"; // <h1> closing
 		// HEAD PLAYER PAGE
 		$playerid=$_GET['id']-1;
@@ -60,7 +60,7 @@ switch($jdat["state"]) {
 		// PRINT ROUND AND POINTS
 		echo "ROUND: ".($jdat['curround']+1)."/".$jdat['rounds']."";
 		echo " - TEAM: ".$ptteam." pt<br></h3>\n";
-		if($jdat['state']==2) {
+		if($jdat["state"]==STATE_PLAY) {
 			//gestione turno
 			if($playerid==$jdat['turno']) {
 				echo "<h3 style='text-align:center;'>TURNO TUO!</h3>\n";
@@ -87,7 +87,7 @@ switch($jdat["state"]) {
 				echo "<p>\n";
             }
 		} else {
-			echo "<h2>GAME END!</h2>\n";
+			echo "<h3 style='text-align:center;color:red;background-color:yellow;'>GAME END!</h3>\n";
 		}
 	default:
 		//unmanaged

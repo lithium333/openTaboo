@@ -16,12 +16,12 @@ gamedataRead(); // VARIABLE : $jdat
 
 // Game State -> 0: INIT, 1: PLAYER ENTERING, 2: RUNNING
 switch($jdat["state"]) {
-	case 0:
+	case STATE_INIT:
         echo "⏳</h1>\n"; // <h1> closing
 		echo "<h3 style='text-align:center;'>Attendere che il caposala imposti i parametri...</h3>\n";
 		echo "<div class='loaderbar'></div>\n";
 		break;
-	case 1:
+	case STATE_JOIN:
         echo "📝</h1>\n"; // <h1> closing
 		echo "<div class='formContainer'>\n";
 		echo "<form action='join.php' method='get'>\n";
@@ -40,7 +40,8 @@ switch($jdat["state"]) {
 		echo "<br><input class='tastoGiocatore' type='submit' value='PROCEDI' onclick='stopRefresh()' />\n";
 		echo "</form>\n</div>\n";
 		break;
-	case 2:
+	case STATE_PLAY:
+    case STATE_STOP:
         echo "🕹️</h1>\n"; // <h1> closing
 		echo "<h2>VAI ALLA TUA PAGINA:</h2>\n";
 		for($i=0;$i<$jdat["nplayers"];$i++) {
